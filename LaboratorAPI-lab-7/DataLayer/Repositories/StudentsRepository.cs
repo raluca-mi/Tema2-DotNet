@@ -19,7 +19,11 @@ namespace DataLayer.Repositories
             return result;
         }
 
-
+        public List<Student> GetAllWithGrades()
+        {
+            var result = dbContext.Students.Include(s => s.Grades).ToList();
+            return result;
+        }
         public Student GetByIdWithGrades(int studentId, CourseType type)
         {
             var result = dbContext.Students

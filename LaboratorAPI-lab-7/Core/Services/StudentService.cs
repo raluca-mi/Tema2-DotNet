@@ -51,6 +51,26 @@ namespace Core.Services
             return results;
         }
 
+        public List<Student> GetAllWithGrades()
+        {
+            var results = unitOfWork.Students.GetAllWithGrades();
+
+            return results;
+        }
+
+        public List<GradesByStudent> GetGradesByAllStudents()
+        {
+            var listOfStudentsWithGrades = new List<GradesByStudent>();
+            var studentsWithGrades = unitOfWork.Students.GetAllWithGrades();
+            foreach(var student in studentsWithGrades)
+            {
+                var result = new GradesByStudent(student);
+                listOfStudentsWithGrades.Add(result);
+
+            }
+            return listOfStudentsWithGrades;
+        }
+
         public StudentDto GetById(int studentId)
         {
             var student = unitOfWork.Students.GetById(studentId);
