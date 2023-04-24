@@ -22,7 +22,10 @@ namespace Project.Settings
         private static void AddServices(IServiceCollection services)
         {
             services.AddScoped<StudentService>();
+            services.AddScoped<AuthorizationService>();
             services.AddScoped<ClassService>();
+            services.AddScoped<UserService>();
+            services.AddScoped<RoleService>();
         }
 
         private static void AddRepositories(IServiceCollection services)
@@ -30,6 +33,8 @@ namespace Project.Settings
             services.AddScoped<StudentsRepository>();
             services.AddScoped<ClassRepository>();
             services.AddScoped<UnitOfWork>();
+            services.AddScoped<UsersRepository>();
+            services.AddScoped<RolesRepository>();
         }
 
     }
