@@ -51,13 +51,6 @@ namespace Core.Services
             return results;
         }
 
-        public List<Student> GetAllWithGrades()
-        {
-            var results = unitOfWork.Students.GetAllWithGrades();
-
-            return results;
-        }
-
         public List<GradesByStudent> GetGradesByAllStudents()
         {
             var listOfStudentsWithGrades = new List<GradesByStudent>();
