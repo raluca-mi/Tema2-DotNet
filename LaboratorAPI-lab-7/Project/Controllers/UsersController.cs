@@ -18,6 +18,14 @@ namespace Project.Controllers
             this.userService = userService;
         }
 
+        [HttpPost("/register")]
+        [AllowAnonymous]
+        public IActionResult Register(RegisterDto payload)
+        {
+            userService.Register(payload);
+            return Ok();
+        }
+
         [HttpPost("/login")]
         [AllowAnonymous]
         public IActionResult Login(LoginDto payload)

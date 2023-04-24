@@ -31,6 +31,8 @@ namespace Core.Services
                 RoleId = registerData.RoleId, 
             };
 
+            
+
             unitOfWork.Users.Insert(user);
             unitOfWork.SaveChanges();
         }
