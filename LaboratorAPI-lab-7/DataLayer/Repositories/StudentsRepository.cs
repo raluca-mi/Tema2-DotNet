@@ -13,6 +13,13 @@ namespace DataLayer.Repositories
             this.dbContext = dbContext;
         }
 
+        public Student GetByUserId(int userId)
+        {
+            var result = dbContext.Students.Include(s => s.Grades ).Include(s => s.Class).FirstOrDefault(s => s.UserId == userId);
+            return result;
+        }
+
+
         public Student GetByIdWithGrades(int studentId, CourseType type)
         {
             var result = dbContext.Students

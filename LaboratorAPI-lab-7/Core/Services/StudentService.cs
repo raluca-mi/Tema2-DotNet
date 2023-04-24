@@ -39,6 +39,11 @@ namespace Core.Services
             return payload;
         }
 
+        public StudentDto GetByUserId(int userId) {
+            var student = unitOfWork.Students.GetByUserId(userId);
+            var result = student.ToStudentDto();
+            return result;
+        }
         public List<Student> GetAll()
         {
             var results = unitOfWork.Students.GetAll();

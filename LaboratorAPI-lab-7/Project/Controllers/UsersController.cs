@@ -3,6 +3,7 @@ using Core.Services;
 using DataLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Project.Controllers
 {
@@ -12,10 +13,12 @@ namespace Project.Controllers
     public class UsersController : ControllerBase
     {
         private UserService userService{ get; set; }
+        private StudentService studentService { get; set; }
 
-        public UsersController(UserService userService)
+        public UsersController(UserService userService, StudentService studentService)
         {
             this.userService = userService;
+            this.studentService = studentService;
         }
 
         [HttpPost("/register")]
@@ -46,6 +49,54 @@ namespace Project.Controllers
         public ActionResult<string> HelloTeachers()
         {
             return Ok("Hello teachers!");
+        }
+
+        [HttpGet("test-auth")]
+        public IActionResult TestLogin()
+        {
+
+            ClaimsPrincipal user = User;
+
+            var result = "";
+
+            foreach (var claim in user.Claims)
+            {
+                result += claim.Type + " : " + claim.Value + "\n";
+            }
+
+            var hasRole_user = user.IsInRole("Student");
+            var hasRole_teacher = user.IsInRole("Teacher");
+
+            return Ok(result);
+        }
+
+
+        [HttpGet("get-grades")]
+        [Authorize(Roles = "Student, Teacher")]
+
+        public IActionResult GetGrades()
+        {
+            ClaimsPrincipal user = User;
+
+
+            if (user.IsInRole("Student"))
+            {
+                var userId = user.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+
+
+                var student = studentService.GetByUserId(int.Parse(userId));
+                var myGrades = student.Grades.ToList();
+
+                return Ok(myGrades);
+            }
+            else if (user.IsInRole("Teacher"))
+            {
+                // var allGrades = userService.GetAllGrades();
+                // return list;
+                return Ok("All student's grades should be displayed!");
+            }
+            return Ok("No role identified");
+
         }
     }
 }
